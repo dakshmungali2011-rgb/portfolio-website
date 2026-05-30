@@ -593,6 +593,231 @@ textarea {
   }
 }
 
+.service-showcase {
+  isolation: isolate;
+}
+
+.service-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(115deg, rgba(6, 182, 212, 0.16), transparent 26%),
+    radial-gradient(circle at 78% 18%, rgba(5, 5, 5, 0.08), transparent 28%),
+    radial-gradient(circle at 16% 84%, rgba(6, 182, 212, 0.12), transparent 30%);
+  animation: sectionGlow 13s ease-in-out infinite alternate;
+}
+
+.service-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(5, 5, 5, 0.045) 1px, transparent 1px);
+  background-size: 74px 74px;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  animation: serviceGridSlide 22s linear infinite;
+}
+
+.service-ring {
+  position: absolute;
+  z-index: 0;
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.service-ring::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #06b6d4;
+  box-shadow: 0 0 26px rgba(6, 182, 212, 0.88);
+}
+
+.service-ring-one {
+  right: -160px;
+  top: 64px;
+  width: 360px;
+  height: 360px;
+  animation: rotateRing 22s linear infinite;
+}
+
+.service-ring-one::after {
+  left: 42px;
+  top: 42px;
+}
+
+.service-ring-two {
+  left: -210px;
+  bottom: -180px;
+  width: 430px;
+  height: 430px;
+  animation: rotateRing 30s linear infinite reverse;
+}
+
+.service-ring-two::after {
+  right: 72px;
+  bottom: 72px;
+}
+
+.sticky-copy {
+  align-self: start;
+}
+
+.counter-strip {
+  box-shadow: 0 24px 72px rgba(5, 5, 5, 0.18);
+}
+
+.counter-cell {
+  position: relative;
+}
+
+.counter-cell + .counter-cell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.service-card-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.service-point {
+  min-height: 280px;
+  border: 1px solid rgba(5, 5, 5, 0.1);
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 26px;
+  box-shadow: 0 24px 76px rgba(5, 5, 5, 0.08);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  animation: serviceFloat 7s ease-in-out infinite;
+}
+
+.service-point:nth-child(2),
+.service-point:nth-child(4) {
+  transform: translateY(38px);
+  animation-delay: -2.4s;
+}
+
+.service-point:nth-child(3) {
+  animation-delay: -4.2s;
+}
+
+.service-point-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  color: rgba(5, 5, 5, 0.48);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.service-arrow {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(5, 5, 5, 0.1);
+  border-radius: 999px;
+  background: #050505;
+  color: #06b6d4;
+  overflow: hidden;
+  transition:
+    transform 320ms cubic-bezier(0.2, 0.84, 0.24, 1),
+    color 320ms ease,
+    background 320ms ease;
+}
+
+.service-point:hover .service-arrow {
+  color: #050505;
+  background: #06b6d4;
+  transform: rotate(-35deg) scale(1.08);
+}
+
+.service-icon {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin-top: 42px;
+  place-items: center;
+  border-radius: 24px;
+  background: #050505;
+  color: #06b6d4;
+  box-shadow: 0 22px 46px rgba(6, 182, 212, 0.18);
+  transition: transform 360ms cubic-bezier(0.2, 0.84, 0.24, 1);
+}
+
+.service-point:hover .service-icon {
+  transform: translateY(-8px) rotate(8deg);
+}
+
+.service-point h3 {
+  margin-top: 30px;
+  color: #050505;
+  font-size: clamp(1.8rem, 3vw, 3.1rem);
+  font-weight: 950;
+  line-height: 0.95;
+}
+
+.service-point p {
+  margin-top: 18px;
+  color: rgba(5, 5, 5, 0.62);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+@keyframes sectionGlow {
+  from {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes serviceGridSlide {
+  to {
+    background-position: 74px 74px;
+  }
+}
+
+@keyframes rotateRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes serviceFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -12px;
+  }
+}
+
 .terminal-scan::before {
   content: "";
   position: absolute;
@@ -686,6 +911,44 @@ textarea {
   .cursor-glow,
   .cursor-core {
     display: none;
+  }
+
+  .kinetic-field {
+    opacity: 0.44;
+  }
+
+  .float-tag {
+    min-width: 64px;
+    min-height: 32px;
+    font-size: 10px;
+  }
+
+  .service-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-point,
+  .service-point:nth-child(2),
+  .service-point:nth-child(4) {
+    min-height: auto;
+    transform: none;
+  }
+
+  .service-ring {
+    opacity: 0.34;
+  }
+
+  .counter-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .counter-cell + .counter-cell::before {
+    left: 18%;
+    right: 18%;
+    top: 0;
+    bottom: auto;
+    width: auto;
+    height: 1px;
   }
 }
 

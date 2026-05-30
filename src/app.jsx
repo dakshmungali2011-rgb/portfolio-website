@@ -96,6 +96,33 @@ const marqueeItems = [
   "Class 10 tools"
 ];
 
+const buildModes = [
+  {
+    title: "Web Interfaces",
+    copy: "Sharp React pages with smooth motion, clean contrast, and responsive details.",
+    tag: "Front-end",
+    icon: "monitor"
+  },
+  {
+    title: "Python Automations",
+    copy: "Small scripts that remove boring work and make study/build workflows faster.",
+    tag: "Utility",
+    icon: "code"
+  },
+  {
+    title: "Linux Systems",
+    copy: "Kali and Debian experiments, terminal setups, and curious system tinkering.",
+    tag: "Terminal",
+    icon: "terminal"
+  },
+  {
+    title: "AI Workflows",
+    copy: "Prompting Claude, Gemini, and ChatGPT to turn ideas into shipped prototypes.",
+    tag: "Vibe",
+    icon: "spark"
+  }
+];
+
 function Icon({ name, className = "h-5 w-5", stroke = "currentColor" }) {
   const common = {
     className,
@@ -370,6 +397,60 @@ function Marquee({ dark = false }) {
         ))}
       </div>
     </div>
+  );
+}
+
+function ServiceShowcase() {
+  return (
+    <section className="service-showcase relative overflow-hidden bg-white px-4 py-20 md:px-8 md:py-28">
+      <div className="service-noise" aria-hidden="true" />
+      <div className="service-ring service-ring-one" aria-hidden="true" />
+      <div className="service-ring service-ring-two" aria-hidden="true" />
+
+      <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div className="reveal sticky-copy">
+          <p className="mb-4 text-sm font-black uppercase text-cyanPulse">Build Modes</p>
+          <h2 className="max-w-3xl text-[clamp(3rem,7vw,7.4rem)] font-black leading-[0.86]">
+            Digital energy, coded with taste.
+          </h2>
+          <p className="mt-7 max-w-xl text-lg leading-8 text-black/62">
+            Inspired by that Royalways-style service motion: big intent on the left, lively build cards on the right,
+            and every piece moving just enough to feel alive.
+          </p>
+
+          <div className="counter-strip mt-9 grid max-w-xl grid-cols-3 overflow-hidden rounded-[30px] border border-black/10 bg-black text-white">
+            {motionStats.map((stat) => (
+              <div key={stat.label} className="counter-cell px-4 py-5 text-center">
+                <p className="text-3xl font-black text-cyanPulse">{stat.value}</p>
+                <p className="mt-1 text-[10px] font-black uppercase text-white/48">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="service-card-grid">
+          {buildModes.map((mode, index) => (
+            <article
+              key={mode.title}
+              className="reveal service-point spotlight group"
+              style={{ transitionDelay: `${index * 90}ms` }}
+            >
+              <div className="service-point-top">
+                <span>{mode.tag}</span>
+                <span className="service-arrow" aria-hidden="true">
+                  <Icon name="arrow" className="h-5 w-5" />
+                </span>
+              </div>
+              <div className="service-icon">
+                <Icon name={mode.icon} className="h-8 w-8" />
+              </div>
+              <h3>{mode.title}</h3>
+              <p>{mode.copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -772,6 +853,7 @@ function App() {
       <Navigation />
       <main>
         <Hero />
+        <ServiceShowcase />
         <About />
         <TechStack />
         <Projects />
