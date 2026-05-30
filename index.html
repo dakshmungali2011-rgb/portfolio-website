@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NotkindBG, Daksh Mungali, Class 10 developer building premium web projects, Python utilities, and Linux experiments."
+    />
+    <title>NotkindBG | Daksh Mungali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#050505",
+              cyanPulse: "#06b6d4",
+              mist: "#f4f7f8"
+            },
+            boxShadow: {
+              cyan: "0 24px 80px rgba(6, 182, 212, 0.28)"
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="bg-white text-ink antialiased">
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-presets="env,react" src="./src/app.jsx"></script>
+  </body>
+</html>
