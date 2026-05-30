@@ -79,6 +79,23 @@ const contacts = [
   { label: "Discord", value: "notkindbg", icon: "hash" }
 ];
 
+const floatingTags = ["React", "Python", "Kali", "Debian", "AI", "Class 10", "Linux", "Vibe"];
+
+const motionStats = [
+  { value: "03", label: "featured builds" },
+  { value: "07", label: "active skills" },
+  { value: "24/7", label: "terminal energy" }
+];
+
+const marqueeItems = [
+  "Web apps",
+  "Linux labs",
+  "Python scripts",
+  "AI workflows",
+  "Fast storefronts",
+  "Class 10 tools"
+];
+
 function Icon({ name, className = "h-5 w-5", stroke = "currentColor" }) {
   const common = {
     className,
@@ -189,21 +206,50 @@ function Icon({ name, className = "h-5 w-5", stroke = "currentColor" }) {
 
 function useMotionSetup() {
   useEffect(() => {
-    const revealItems = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.16, rootMargin: "0px 0px -60px 0px" }
-    );
+    document.body.classList.add("site-ready");
+    const progress = document.querySelector(".scroll-progress");
+    const parallaxItems = document.querySelectorAll("[data-parallax]");
 
-    revealItems.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
+    const updateScrollMotion = () => {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const ratio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      progress?.style.setProperty("--scroll", ratio);
+
+      parallaxItems.forEach((item) => {
+        const speed = Number(item.dataset.parallax || 0.08);
+        item.style.setProperty("--py", `${window.scrollY * speed}px`);
+      });
+    };
+
+    updateScrollMotion();
+    window.addEventListener("scroll", updateScrollMotion, { passive: true });
+
+    return () => {
+      document.body.classList.remove("site-ready");
+      window.removeEventListener("scroll", updateScrollMotion);
+    };
+  }, []);
+
+  useEffect(() => {
+    const revealItems = document.querySelectorAll(".reveal");
+
+    const updateReveals = () => {
+      revealItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.88 && rect.bottom > 0) {
+          item.classList.add("revealed");
+        }
+      });
+    };
+
+    updateReveals();
+    window.addEventListener("scroll", updateReveals, { passive: true });
+    window.addEventListener("resize", updateReveals);
+
+    return () => {
+      window.removeEventListener("scroll", updateReveals);
+      window.removeEventListener("resize", updateReveals);
+    };
   }, []);
 
   useEffect(() => {
@@ -272,6 +318,59 @@ function useMotionSetup() {
 
     return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
+
+  useEffect(() => {
+    const items = document.querySelectorAll(".spotlight");
+
+    const cleanups = Array.from(items).map((item) => {
+      const move = (event) => {
+        const rect = item.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        item.style.setProperty("--sx", `${x}%`);
+        item.style.setProperty("--sy", `${y}%`);
+        item.style.setProperty("--rx", `${(y - 50) * -0.05}deg`);
+        item.style.setProperty("--ry", `${(x - 50) * 0.05}deg`);
+      };
+
+      const leave = () => {
+        item.style.setProperty("--sx", "50%");
+        item.style.setProperty("--sy", "50%");
+        item.style.setProperty("--rx", "0deg");
+        item.style.setProperty("--ry", "0deg");
+      };
+
+      item.addEventListener("pointermove", move);
+      item.addEventListener("pointerleave", leave);
+      return () => {
+        item.removeEventListener("pointermove", move);
+        item.removeEventListener("pointerleave", leave);
+      };
+    });
+
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, []);
+}
+
+function ScrollProgress() {
+  return <div className="scroll-progress" aria-hidden="true" />;
+}
+
+function Marquee({ dark = false }) {
+  const items = [...marqueeItems, ...marqueeItems, ...marqueeItems];
+
+  return (
+    <div className={`marquee-shell ${dark ? "marquee-dark" : ""}`} aria-hidden="true">
+      <div className="marquee-track">
+        {items.map((item, index) => (
+          <span key={`${item}-${index}`}>
+            {item}
+            <span className="mx-4 text-cyanPulse">/</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function Logo() {
@@ -303,7 +402,7 @@ function Navigation() {
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-4 md:px-8">
-      <nav className="mx-auto max-w-7xl rounded-[24px] border border-white/45 bg-white/70 px-4 py-3 shadow-2xl shadow-black/5 backdrop-blur-2xl md:px-6">
+      <nav className="motion-nav mx-auto max-w-7xl rounded-[24px] border border-white/45 bg-white/70 px-4 py-3 shadow-2xl shadow-black/5 backdrop-blur-2xl md:px-6">
         <div className="flex items-center justify-between gap-4">
           <Logo />
 
@@ -360,12 +459,19 @@ function Navigation() {
 function Hero() {
   return (
     <section id="home" className="dot-grid relative isolate min-h-screen overflow-hidden px-4 pb-20 pt-36 md:px-8 md:pt-44">
-      <div className="orb orb-cyan left-[-120px] top-24 h-72 w-72 md:h-[520px] md:w-[520px]" />
-      <div className="orb orb-gray orb-delay right-[-120px] top-28 h-80 w-80 md:h-[560px] md:w-[560px]" />
-      <div className="orb orb-cyan orb-delay bottom-4 left-[46%] h-56 w-56 opacity-30 md:h-80 md:w-80" />
+      <div className="orb orb-cyan scroll-float left-[-120px] top-24 h-72 w-72 md:h-[520px] md:w-[520px]" data-parallax="0.05" />
+      <div className="orb orb-gray orb-delay scroll-float right-[-120px] top-28 h-80 w-80 md:h-[560px] md:w-[560px]" data-parallax="-0.035" />
+      <div className="orb orb-cyan orb-delay scroll-float bottom-4 left-[46%] h-56 w-56 opacity-30 md:h-80 md:w-80" data-parallax="0.025" />
+      <div className="kinetic-field" aria-hidden="true">
+        {floatingTags.map((tag, index) => (
+          <span key={tag} className={`float-tag float-tag-${index + 1}`}>
+            {tag}
+          </span>
+        ))}
+      </div>
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="reveal">
+        <div className="reveal hero-copy">
           <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/70 px-4 py-2 shadow-xl shadow-black/5 backdrop-blur-xl">
             <span className="pulse-dot h-2.5 w-2.5 rounded-full bg-cyanPulse shadow-lg shadow-cyan-500/70" />
             <span className="text-xs font-black uppercase text-black/70">Class 10 // dev</span>
@@ -397,10 +503,14 @@ function Hero() {
               <Icon name="arrow" className="h-5 w-5" />
             </a>
           </div>
+
+          <div className="mt-10 max-w-2xl">
+            <Marquee />
+          </div>
         </div>
 
         <div className="reveal relative">
-          <div className="glass card-hover terminal-scan relative overflow-hidden rounded-[34px] p-4 md:p-6">
+          <div className="glass card-hover spotlight terminal-card terminal-scan relative overflow-hidden rounded-[34px] p-4 md:p-6">
             <div className="mb-5 flex items-center justify-between">
               <div className="flex gap-2">
                 <span className="h-3 w-3 rounded-full bg-red-500" />
@@ -412,20 +522,33 @@ function Hero() {
               </span>
             </div>
 
-            <div className="rounded-[26px] bg-black p-5 font-mono text-sm leading-8 text-white shadow-2xl shadow-black/20 md:p-7 md:text-base">
-              <p>
+            <div className="terminal-screen rounded-[26px] bg-black p-5 font-mono text-sm leading-8 text-white shadow-2xl shadow-black/20 md:p-7 md:text-base">
+              <p className="terminal-line">
                 <span className="text-cyanPulse">daksh@kali</span>:<span className="text-white/70">~</span>$ whoami
               </p>
-              <p className="text-white/80">Daksh Mungali</p>
-              <p className="mt-4">
+              <p className="terminal-line text-white/80">Daksh Mungali</p>
+              <p className="terminal-line mt-4">
                 <span className="text-cyanPulse">daksh@kali</span>:<span className="text-white/70">~</span>$ grade --status
               </p>
-              <p className="text-white/80">Class 10 Student &amp; Vibe Coder</p>
-              <p className="mt-4 flex items-center gap-2 text-cyanPulse">
+              <p className="terminal-line text-white/80">Class 10 Student &amp; Vibe Coder</p>
+              <p className="terminal-line mt-4 flex items-center gap-2 text-cyanPulse">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-cyanPulse" />
                 compiling premium-web.exe
               </p>
             </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {motionStats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className="glass stat-chip reveal rounded-3xl px-4 py-4 text-center"
+                style={{ transitionDelay: `${index * 80}ms` }}
+              >
+                <p className="text-2xl font-black text-black">{stat.value}</p>
+                <p className="mt-1 text-[11px] font-black uppercase text-black/45">{stat.label}</p>
+              </div>
+            ))}
           </div>
 
           <div className="glass absolute -bottom-7 -left-2 hidden rounded-3xl px-5 py-4 shadow-cyan md:block">
@@ -442,7 +565,8 @@ function About() {
   return (
     <section id="about" className="relative overflow-hidden bg-black px-4 py-24 text-white md:px-8 md:py-32">
       <div className="dark-grid absolute inset-0 opacity-70" />
-      <div className="orb orb-cyan right-[-180px] top-16 h-80 w-80 opacity-25 md:h-[520px] md:w-[520px]" />
+      <div className="orb orb-cyan scroll-float right-[-180px] top-16 h-80 w-80 opacity-25 md:h-[520px] md:w-[520px]" data-parallax="-0.025" />
+      <Marquee dark />
 
       <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="reveal">
@@ -453,9 +577,9 @@ function About() {
         </div>
 
         <div className="reveal">
-          <div className="dark-glass card-hover relative rounded-[34px] p-7 md:p-10">
+          <div className="dark-glass card-hover spotlight relative rounded-[34px] p-7 md:p-10">
             <span className="comic absolute -right-3 -top-5 rotate-6 rounded-2xl bg-cyanPulse px-5 py-3 text-xl font-black text-black shadow-cyan">
-              Class 10! 🚀
+              Class 10! {"\u{1F680}"}
             </span>
             <blockquote className="text-3xl font-black leading-tight md:text-5xl">
               &quot;Hey, I like to vibe code and I am obsessed with computers and the internet.&quot;
@@ -474,7 +598,7 @@ function About() {
 function TechStack() {
   return (
     <section id="tech" className="dot-grid relative overflow-hidden px-4 py-24 md:px-8 md:py-32">
-      <div className="orb orb-gray left-[-170px] top-24 h-96 w-96 opacity-35" />
+      <div className="orb orb-gray scroll-float left-[-170px] top-24 h-96 w-96 opacity-35" data-parallax="0.03" />
       <div className="relative mx-auto max-w-7xl">
         <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -492,7 +616,7 @@ function TechStack() {
           {skills.map((skill, index) => (
             <article
               key={skill.title}
-              className="reveal glass card-hover rounded-[28px] p-6"
+              className="reveal glass card-hover spotlight stack-card rounded-[28px] p-6"
               style={{ transitionDelay: `${index * 55}ms` }}
             >
               <div className="mb-8 grid h-14 w-14 place-items-center rounded-2xl bg-black text-cyanPulse shadow-xl shadow-cyan-500/20">
@@ -512,7 +636,7 @@ function Projects() {
   return (
     <section id="projects" className="relative overflow-hidden bg-black px-4 py-24 text-white md:px-8 md:py-32">
       <div className="dark-grid absolute inset-0 opacity-65" />
-      <div className="orb orb-cyan bottom-10 left-[-170px] h-[440px] w-[440px] opacity-25" />
+      <div className="orb orb-cyan scroll-float bottom-10 left-[-170px] h-[440px] w-[440px] opacity-25" data-parallax="0.025" />
 
       <div className="relative mx-auto max-w-7xl">
         <div className="reveal mb-14">
@@ -529,7 +653,7 @@ function Projects() {
               href={project.href}
               target={project.href.startsWith("http") ? "_blank" : undefined}
               rel={project.href.startsWith("http") ? "noreferrer" : undefined}
-              className="reveal dark-glass card-hover group grid gap-8 rounded-[34px] p-6 md:grid-cols-[0.22fr_0.78fr] md:p-8"
+              className="reveal dark-glass card-hover spotlight project-card group grid gap-8 rounded-[34px] p-6 md:grid-cols-[0.22fr_0.78fr] md:p-8"
               style={{ transitionDelay: `${index * 70}ms` }}
             >
               <div className="flex items-start justify-between md:block">
@@ -554,7 +678,7 @@ function Projects() {
 function Contact() {
   return (
     <section id="contact" className="dot-grid relative overflow-hidden px-4 py-24 md:px-8 md:py-32">
-      <div className="orb orb-cyan right-[-170px] top-8 h-96 w-96 opacity-34" />
+      <div className="orb orb-cyan scroll-float right-[-170px] top-8 h-96 w-96 opacity-34" data-parallax="-0.02" />
       <div className="relative mx-auto max-w-7xl">
         <div className="reveal mb-12">
           <p className="mb-4 text-sm font-black uppercase text-cyanPulse">Contact</p>
@@ -576,7 +700,7 @@ function Contact() {
             );
 
             const classes =
-              "reveal glass card-hover flex items-center gap-5 rounded-[30px] p-6 md:p-8";
+              "reveal glass card-hover spotlight flex items-center gap-5 rounded-[30px] p-6 md:p-8";
 
             return contact.href ? (
               <a key={contact.label} href={contact.href} className={classes} style={{ transitionDelay: `${index * 60}ms` }}>
@@ -642,6 +766,7 @@ function App() {
 
   return (
     <>
+      <ScrollProgress />
       <div className="cursor-glow" />
       <div className="cursor-core" />
       <Navigation />
