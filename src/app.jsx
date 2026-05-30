@@ -233,6 +233,13 @@ function Icon({ name, className = "h-5 w-5", stroke = "currentColor" }) {
 
 function useMotionSetup() {
   useEffect(() => {
+    document.querySelectorAll("video[autoplay]").forEach((video) => {
+      video.muted = true;
+      video.play().catch(() => {});
+    });
+  }, []);
+
+  useEffect(() => {
     document.body.classList.add("site-ready");
     const progress = document.querySelector(".scroll-progress");
     const parallaxItems = document.querySelectorAll("[data-parallax]");
@@ -402,7 +409,7 @@ function Marquee({ dark = false }) {
 
 function ServiceShowcase() {
   return (
-    <section className="service-showcase relative overflow-hidden bg-white px-4 py-20 md:px-8 md:py-28">
+    <section className="service-showcase relative overflow-hidden bg-mist px-4 py-20 md:px-8 md:py-28">
       <div className="service-noise" aria-hidden="true" />
       <div className="service-ring service-ring-one" aria-hidden="true" />
       <div className="service-ring service-ring-two" aria-hidden="true" />
@@ -413,16 +420,16 @@ function ServiceShowcase() {
           <h2 className="max-w-3xl text-[clamp(3rem,7vw,7.4rem)] font-black leading-[0.86]">
             Digital energy, coded with taste.
           </h2>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-black/62">
+          <p className="mt-7 max-w-xl text-lg leading-8 text-ink/62">
             Inspired by that Royalways-style service motion: big intent on the left, lively build cards on the right,
             and every piece moving just enough to feel alive.
           </p>
 
-          <div className="counter-strip mt-9 grid max-w-xl grid-cols-3 overflow-hidden rounded-[30px] border border-black/10 bg-black text-white">
+          <div className="counter-strip mt-9 grid max-w-xl grid-cols-3 overflow-hidden rounded-[30px] border border-ink/10 bg-void text-mist">
             {motionStats.map((stat) => (
               <div key={stat.label} className="counter-cell px-4 py-5 text-center">
                 <p className="text-3xl font-black text-cyanPulse">{stat.value}</p>
-                <p className="mt-1 text-[10px] font-black uppercase text-white/48">{stat.label}</p>
+                <p className="mt-1 text-[10px] font-black uppercase text-mist/48">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -459,7 +466,7 @@ function Logo() {
 
   return (
     <a href="#home" className="group flex items-center gap-3" aria-label="NotkindBG home">
-      <span className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-black/10 bg-black text-sm font-black text-white shadow-lg shadow-cyan-500/20 transition group-hover:scale-105">
+      <span className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-ink/10 bg-void text-sm font-black text-mist shadow-lg shadow-lime-400/20 transition group-hover:scale-105">
         {logoOk ? (
           <img
             src="./logo.png"
@@ -483,7 +490,7 @@ function Navigation() {
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-4 md:px-8">
-      <nav className="motion-nav mx-auto max-w-7xl rounded-[24px] border border-white/45 bg-white/70 px-4 py-3 shadow-2xl shadow-black/5 backdrop-blur-2xl md:px-6">
+      <nav className="motion-nav mx-auto max-w-7xl rounded-[24px] border border-mist/45 bg-mist/70 px-4 py-3 shadow-2xl shadow-ink/5 backdrop-blur-2xl md:px-6">
         <div className="flex items-center justify-between gap-4">
           <Logo />
 
@@ -492,7 +499,7 @@ function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-full px-4 py-2 text-sm font-bold text-black/70 transition hover:bg-black hover:text-white"
+                className="rounded-full px-4 py-2 text-sm font-bold text-ink/70 transition hover:bg-void hover:text-mist"
               >
                 {link.label}
               </a>
@@ -501,7 +508,7 @@ function Navigation() {
 
           <a
             href="#contact"
-            className="magnetic hidden items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-black text-white shadow-xl shadow-cyan-500/20 transition hover:bg-cyanPulse md:flex"
+            className="magnetic hidden items-center gap-2 rounded-full bg-void px-5 py-3 text-sm font-black text-mist shadow-xl shadow-lime-400/20 transition hover:bg-cyanPulse md:flex"
           >
             Let&apos;s talk
             <Icon name="arrow" className="h-4 w-4" />
@@ -509,7 +516,7 @@ function Navigation() {
 
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-2xl border border-black/10 bg-white text-black md:hidden"
+            className="grid h-11 w-11 place-items-center rounded-2xl border border-ink/10 bg-mist text-ink md:hidden"
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
@@ -519,12 +526,12 @@ function Navigation() {
         </div>
 
         {open && (
-          <div className="mt-4 grid gap-2 rounded-3xl border border-black/10 bg-white p-3 md:hidden">
+          <div className="mt-4 grid gap-2 rounded-3xl border border-ink/10 bg-mist p-3 md:hidden">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-2xl px-4 py-3 text-base font-black text-black transition hover:bg-black hover:text-white"
+                className="rounded-2xl px-4 py-3 text-base font-black text-ink transition hover:bg-void hover:text-mist"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -539,7 +546,19 @@ function Navigation() {
 
 function Hero() {
   return (
-    <section id="home" className="dot-grid relative isolate min-h-screen overflow-hidden px-4 pb-20 pt-36 md:px-8 md:pt-44">
+    <section id="home" className="void-hero relative isolate min-h-screen overflow-hidden px-4 pb-20 pt-36 md:px-8 md:pt-44">
+      <video
+        className="hero-video"
+        src="./assets/void-background.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      />
+      <div className="hero-video-wash" aria-hidden="true" />
+      <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
+      <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
       <div className="orb orb-cyan scroll-float left-[-120px] top-24 h-72 w-72 md:h-[520px] md:w-[520px]" data-parallax="0.05" />
       <div className="orb orb-gray orb-delay scroll-float right-[-120px] top-28 h-80 w-80 md:h-[560px] md:w-[560px]" data-parallax="-0.035" />
       <div className="orb orb-cyan orb-delay scroll-float bottom-4 left-[46%] h-56 w-56 opacity-30 md:h-80 md:w-80" data-parallax="0.025" />
@@ -553,32 +572,32 @@ function Hero() {
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="reveal hero-copy">
-          <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/70 px-4 py-2 shadow-xl shadow-black/5 backdrop-blur-xl">
-            <span className="pulse-dot h-2.5 w-2.5 rounded-full bg-cyanPulse shadow-lg shadow-cyan-500/70" />
-            <span className="text-xs font-black uppercase text-black/70">Class 10 // dev</span>
+          <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-mist/15 bg-mist/10 px-4 py-2 shadow-xl shadow-ink/20 backdrop-blur-xl">
+            <span className="pulse-dot h-2.5 w-2.5 rounded-full bg-cyanPulse shadow-lg shadow-lime-400/70" />
+            <span className="text-xs font-black uppercase text-mist/80">Class 10 // dev</span>
           </div>
 
-          <h1 className="max-w-5xl text-[clamp(3.6rem,10vw,10.6rem)] font-black leading-[0.82]">
+          <h1 className="max-w-5xl text-[clamp(3.6rem,10vw,10.6rem)] font-black leading-[0.82] text-mist">
             Hi, I&apos;m <span className="shimmer block">NotkindBG</span>
           </h1>
-          <p className="mt-5 text-[clamp(1.8rem,5vw,4.8rem)] font-black leading-none text-black/85">
+          <p className="mt-5 text-[clamp(1.8rem,5vw,4.8rem)] font-black leading-none text-mist/85">
             Daksh Mungali
           </p>
-          <p className="comic mt-7 max-w-2xl text-xl leading-8 text-black/70 md:text-2xl md:leading-9">
+          <p className="comic mt-7 max-w-2xl text-xl leading-8 text-mist/72 md:text-2xl md:leading-9">
             Building things for the web, breaking things in Linux. Currently exploring Python and Debian systems.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
               href="#contact"
-              className="magnetic inline-flex items-center justify-center gap-3 rounded-2xl bg-black px-7 py-4 text-base font-black text-white shadow-2xl shadow-cyan-500/20 transition hover:bg-cyanPulse"
+              className="magnetic inline-flex items-center justify-center gap-3 rounded-2xl bg-cyanPulse px-7 py-4 text-base font-black text-ink shadow-2xl shadow-lime-400/25 transition hover:bg-ember"
             >
               Contact Me
               <Icon name="mail" className="h-5 w-5" />
             </a>
             <a
               href="#projects"
-              className="magnetic inline-flex items-center justify-center gap-3 rounded-2xl border border-black/15 bg-white/70 px-7 py-4 text-base font-black text-black shadow-2xl shadow-black/5 backdrop-blur-xl transition hover:border-cyanPulse hover:text-cyanPulse"
+              className="magnetic inline-flex items-center justify-center gap-3 rounded-2xl border border-mist/15 bg-mist/10 px-7 py-4 text-base font-black text-mist shadow-2xl shadow-ink/15 backdrop-blur-xl transition hover:border-cyanPulse hover:text-cyanPulse"
             >
               View My Work
               <Icon name="arrow" className="h-5 w-5" />
@@ -598,20 +617,20 @@ function Hero() {
                 <span className="h-3 w-3 rounded-full bg-yellow-400" />
                 <span className="h-3 w-3 rounded-full bg-cyanPulse" />
               </div>
-              <span className="rounded-full border border-black/10 bg-white/60 px-3 py-1 text-xs font-black text-black/50">
+              <span className="rounded-full border border-ink/10 bg-mist/60 px-3 py-1 text-xs font-black text-ink/50">
                 system status
               </span>
             </div>
 
-            <div className="terminal-screen rounded-[26px] bg-black p-5 font-mono text-sm leading-8 text-white shadow-2xl shadow-black/20 md:p-7 md:text-base">
+            <div className="terminal-screen rounded-[26px] bg-void p-5 font-mono text-sm leading-8 text-mist shadow-2xl shadow-ink/20 md:p-7 md:text-base">
               <p className="terminal-line">
-                <span className="text-cyanPulse">daksh@kali</span>:<span className="text-white/70">~</span>$ whoami
+                <span className="text-cyanPulse">daksh@kali</span>:<span className="text-mist/70">~</span>$ whoami
               </p>
-              <p className="terminal-line text-white/80">Daksh Mungali</p>
+              <p className="terminal-line text-mist/80">Daksh Mungali</p>
               <p className="terminal-line mt-4">
-                <span className="text-cyanPulse">daksh@kali</span>:<span className="text-white/70">~</span>$ grade --status
+                <span className="text-cyanPulse">daksh@kali</span>:<span className="text-mist/70">~</span>$ grade --status
               </p>
-              <p className="terminal-line text-white/80">Class 10 Student &amp; Vibe Coder</p>
+              <p className="terminal-line text-mist/80">Class 10 Student &amp; Vibe Coder</p>
               <p className="terminal-line mt-4 flex items-center gap-2 text-cyanPulse">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-cyanPulse" />
                 compiling premium-web.exe
@@ -626,15 +645,15 @@ function Hero() {
                 className="glass stat-chip reveal rounded-3xl px-4 py-4 text-center"
                 style={{ transitionDelay: `${index * 80}ms` }}
               >
-                <p className="text-2xl font-black text-black">{stat.value}</p>
-                <p className="mt-1 text-[11px] font-black uppercase text-black/45">{stat.label}</p>
+                <p className="text-2xl font-black text-ink">{stat.value}</p>
+                <p className="mt-1 text-[11px] font-black uppercase text-ink/45">{stat.label}</p>
               </div>
             ))}
           </div>
 
           <div className="glass absolute -bottom-7 -left-2 hidden rounded-3xl px-5 py-4 shadow-cyan md:block">
-            <p className="text-xs font-black uppercase text-black/45">Current mode</p>
-            <p className="comic text-2xl text-black">vibe coding</p>
+            <p className="text-xs font-black uppercase text-ink/45">Current mode</p>
+            <p className="comic text-2xl text-ink">vibe coding</p>
           </div>
         </div>
       </div>
@@ -644,7 +663,7 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-black px-4 py-24 text-white md:px-8 md:py-32">
+    <section id="about" className="relative overflow-hidden bg-void px-4 py-24 text-mist md:px-8 md:py-32">
       <div className="dark-grid absolute inset-0 opacity-70" />
       <div className="orb orb-cyan scroll-float right-[-180px] top-16 h-80 w-80 opacity-25 md:h-[520px] md:w-[520px]" data-parallax="-0.025" />
       <Marquee dark />
@@ -659,13 +678,13 @@ function About() {
 
         <div className="reveal">
           <div className="dark-glass card-hover spotlight relative rounded-[34px] p-7 md:p-10">
-            <span className="comic absolute -right-3 -top-5 rotate-6 rounded-2xl bg-cyanPulse px-5 py-3 text-xl font-black text-black shadow-cyan">
+            <span className="comic absolute -right-3 -top-5 rotate-6 rounded-2xl bg-cyanPulse px-5 py-3 text-xl font-black text-ink shadow-cyan">
               Class 10! {"\u{1F680}"}
             </span>
             <blockquote className="text-3xl font-black leading-tight md:text-5xl">
               &quot;Hey, I like to vibe code and I am obsessed with computers and the internet.&quot;
             </blockquote>
-            <p className="mt-8 text-lg leading-8 text-white/72 md:text-xl md:leading-9">
+            <p className="mt-8 text-lg leading-8 text-mist/72 md:text-xl md:leading-9">
               Balancing 10th grade with my screen time. When I&apos;m not studying, I build web apps, write Python
               scripts to automate stuff, and mess around with Kali Linux and TradeGuru.store.
             </p>
@@ -688,7 +707,7 @@ function TechStack() {
               Tools I use to build fast.
             </h2>
           </div>
-          <p className="max-w-md text-lg leading-8 text-black/62">
+          <p className="max-w-md text-lg leading-8 text-ink/62">
             A compact stack with web craft, Linux curiosity, Python automation, and AI-powered momentum.
           </p>
         </div>
@@ -700,11 +719,11 @@ function TechStack() {
               className="reveal glass card-hover spotlight stack-card rounded-[28px] p-6"
               style={{ transitionDelay: `${index * 55}ms` }}
             >
-              <div className="mb-8 grid h-14 w-14 place-items-center rounded-2xl bg-black text-cyanPulse shadow-xl shadow-cyan-500/20">
+              <div className="mb-8 grid h-14 w-14 place-items-center rounded-2xl bg-void text-cyanPulse shadow-xl shadow-lime-400/20">
                 <Icon name={skill.icon} className="h-7 w-7" />
               </div>
               <h3 className="text-2xl font-black">{skill.title}</h3>
-              <p className="mt-4 leading-7 text-black/62">{skill.copy}</p>
+              <p className="mt-4 leading-7 text-ink/62">{skill.copy}</p>
             </article>
           ))}
         </div>
@@ -715,7 +734,7 @@ function TechStack() {
 
 function Projects() {
   return (
-    <section id="projects" className="relative overflow-hidden bg-black px-4 py-24 text-white md:px-8 md:py-32">
+    <section id="projects" className="relative overflow-hidden bg-void px-4 py-24 text-mist md:px-8 md:py-32">
       <div className="dark-grid absolute inset-0 opacity-65" />
       <div className="orb orb-cyan scroll-float bottom-10 left-[-170px] h-[440px] w-[440px] opacity-25" data-parallax="0.025" />
 
@@ -738,15 +757,15 @@ function Projects() {
               style={{ transitionDelay: `${index * 70}ms` }}
             >
               <div className="flex items-start justify-between md:block">
-                <span className="text-6xl font-black text-white/12 md:text-8xl">{project.marker}</span>
-                <span className="grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-white/10 text-cyanPulse transition group-hover:rotate-45 group-hover:bg-cyanPulse group-hover:text-black md:mt-10">
+                <span className="text-6xl font-black text-mist/12 md:text-8xl">{project.marker}</span>
+                <span className="grid h-12 w-12 place-items-center rounded-full border border-mist/15 bg-mist/10 text-cyanPulse transition group-hover:rotate-45 group-hover:bg-cyanPulse group-hover:text-ink md:mt-10">
                   <Icon name="external" className="h-5 w-5" />
                 </span>
               </div>
               <div>
                 <p className="mb-4 text-sm font-black uppercase text-cyanPulse">{project.type}</p>
                 <h3 className="text-4xl font-black md:text-6xl">{project.name}</h3>
-                <p className="mt-5 max-w-3xl text-lg leading-8 text-white/68 md:text-xl md:leading-9">{project.copy}</p>
+                <p className="mt-5 max-w-3xl text-lg leading-8 text-mist/68 md:text-xl md:leading-9">{project.copy}</p>
               </div>
             </a>
           ))}
@@ -770,12 +789,12 @@ function Contact() {
           {contacts.map((contact, index) => {
             const content = (
               <>
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-black text-cyanPulse">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-void text-cyanPulse">
                   <Icon name={contact.icon} className="h-7 w-7" />
                 </div>
                 <div>
-                  <p className="text-sm font-black uppercase text-black/45">{contact.label}</p>
-                  <p className="mt-2 break-words text-2xl font-black text-black md:text-3xl">{contact.value}</p>
+                  <p className="text-sm font-black uppercase text-ink/45">{contact.label}</p>
+                  <p className="mt-2 break-words text-2xl font-black text-ink md:text-3xl">{contact.value}</p>
                 </div>
               </>
             );
@@ -810,11 +829,11 @@ function Footer() {
   );
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-void text-mist">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 md:flex-row md:items-center md:justify-between md:px-8">
         <div>
           <Logo />
-          <p className="mt-4 text-sm text-white/52">Copyright 2026 Daksh Mungali (NotkindBG).</p>
+          <p className="mt-4 text-sm text-mist/52">Copyright 2026 Daksh Mungali (NotkindBG).</p>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -824,7 +843,7 @@ function Footer() {
               href={social.href}
               target={social.href.startsWith("http") ? "_blank" : undefined}
               rel={social.href.startsWith("http") ? "noreferrer" : undefined}
-              className="magnetic inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-5 py-3 text-sm font-black text-white transition hover:border-cyanPulse hover:text-cyanPulse"
+              className="magnetic inline-flex items-center gap-2 rounded-full border border-mist/12 bg-mist/8 px-5 py-3 text-sm font-black text-mist transition hover:border-cyanPulse hover:text-cyanPulse"
             >
               <Icon name={social.icon} className="h-5 w-5" />
               {social.label}
@@ -833,8 +852,8 @@ function Footer() {
         </div>
       </div>
 
-      <div className="easter-bar bg-black" tabIndex="0" aria-label="Secret easter egg">
-        <div className="flex h-[52px] items-center justify-center bg-black px-4 text-center text-sm font-black text-red-500 md:text-base">
+      <div className="easter-bar bg-void" tabIndex="0" aria-label="Secret easter egg">
+        <div className="flex h-[52px] items-center justify-center bg-void px-4 text-center text-sm font-black text-red-500 md:text-base">
           Sunwheels idea and it&apos;s founder both are stupid and dumb
         </div>
       </div>

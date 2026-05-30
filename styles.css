@@ -1,7 +1,11 @@
 :root {
-  --cyan: #06b6d4;
-  --ink: #050505;
-  --paper: #ffffff;
+  --acid: #d9ff3f;
+  --ember: #ff5c35;
+  --rose: #ffb59e;
+  --void: #080a0f;
+  --cyan: var(--acid);
+  --ink: #11140f;
+  --paper: #f3ead7;
   color-scheme: light;
   scroll-behavior: smooth;
 }
@@ -18,6 +22,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   cursor: none;
+  background:
+    radial-gradient(circle at 10% 5%, rgba(255, 92, 53, 0.13), transparent 26%),
+    linear-gradient(180deg, #f3ead7, #e8ddc5);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -32,24 +39,131 @@ textarea {
 }
 
 ::selection {
-  background: rgba(6, 182, 212, 0.24);
+  background: rgba(217, 255, 63, 0.24);
   color: var(--ink);
 }
 
 .dot-grid {
   background-image:
     radial-gradient(circle at 1px 1px, rgba(5, 5, 5, 0.14) 1px, transparent 0),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72));
+    linear-gradient(180deg, rgba(243, 234, 215, 0.92), rgba(243, 234, 215, 0.72));
   background-size: 28px 28px, 100% 100%;
   animation: gridDrift 24s linear infinite;
 }
 
 .dark-grid {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.12) 1px, transparent 0),
-    linear-gradient(135deg, rgba(6, 182, 212, 0.12), transparent 36%);
+    radial-gradient(circle at 1px 1px, rgba(243, 234, 215, 0.12) 1px, transparent 0),
+    linear-gradient(135deg, rgba(255, 92, 53, 0.14), transparent 36%);
   background-size: 30px 30px, 100% 100%;
   animation: gridDrift 30s linear infinite reverse;
+}
+
+.void-hero {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(217, 255, 63, 0.16), transparent 26%),
+    radial-gradient(circle at 80% 12%, rgba(255, 92, 53, 0.2), transparent 32%),
+    linear-gradient(135deg, #080a0f, #151810 56%, #090a0f);
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.58;
+  filter: saturate(1.35) contrast(1.12) brightness(0.7);
+  transform: scale(1.04);
+  animation: videoBreath 13s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.hero-video-wash {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(circle at 18% 34%, rgba(217, 255, 63, 0.22), transparent 28%),
+    radial-gradient(circle at 84% 22%, rgba(255, 92, 53, 0.24), transparent 30%),
+    linear-gradient(90deg, rgba(8, 10, 15, 0.88), rgba(8, 10, 15, 0.42) 52%, rgba(8, 10, 15, 0.9));
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+.hero-orbit {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(217, 255, 63, 0.16);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.hero-orbit::before,
+.hero-orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: var(--acid);
+  box-shadow: 0 0 28px rgba(217, 255, 63, 0.74);
+}
+
+.hero-orbit-one {
+  right: -180px;
+  top: 112px;
+  width: 520px;
+  height: 520px;
+  animation: rotateRing 26s linear infinite;
+}
+
+.hero-orbit-one::before {
+  top: 74px;
+  left: 82px;
+  width: 14px;
+  height: 14px;
+}
+
+.hero-orbit-one::after {
+  right: 64px;
+  bottom: 92px;
+  width: 9px;
+  height: 9px;
+  background: var(--ember);
+}
+
+.hero-orbit-two {
+  left: 42%;
+  bottom: -260px;
+  width: 620px;
+  height: 620px;
+  border-color: rgba(255, 92, 53, 0.12);
+  animation: rotateRing 38s linear infinite reverse;
+}
+
+.hero-orbit-two::before {
+  top: 130px;
+  right: 92px;
+  width: 11px;
+  height: 11px;
+  background: var(--ember);
+}
+
+.hero-orbit-two::after {
+  left: 116px;
+  bottom: 128px;
+  width: 8px;
+  height: 8px;
+}
+
+@keyframes videoBreath {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: scale(1.12) translate3d(-18px, 12px, 0);
+  }
 }
 
 @keyframes gridDrift {
@@ -67,8 +181,8 @@ textarea {
   z-index: 10000;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #050505, #06b6d4, #ffffff);
-  box-shadow: 0 0 22px rgba(6, 182, 212, 0.65);
+  background: linear-gradient(90deg, #11140f, #d9ff3f, #f3ead7);
+  box-shadow: 0 0 22px rgba(217, 255, 63, 0.65);
   transform: scaleX(var(--scroll, 0));
   transform-origin: left center;
 }
@@ -90,16 +204,16 @@ textarea {
 }
 
 .glass {
-  border: 1px solid rgba(255, 255, 255, 0.36);
-  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(243, 234, 215, 0.36);
+  background: rgba(243, 234, 215, 0.68);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: 0 24px 70px rgba(5, 5, 5, 0.09);
 }
 
 .dark-glass {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(243, 234, 215, 0.12);
+  background: rgba(243, 234, 215, 0.07);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
@@ -118,14 +232,14 @@ textarea {
 
 .orb-cyan {
   background:
-    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.8), transparent 18%),
-    linear-gradient(135deg, rgba(6, 182, 212, 0.62), rgba(6, 182, 212, 0.06));
+    radial-gradient(circle at 30% 26%, rgba(243, 234, 215, 0.8), transparent 18%),
+    linear-gradient(135deg, rgba(217, 255, 63, 0.62), rgba(217, 255, 63, 0.06));
 }
 
 .orb-gray {
   background:
-    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.84), transparent 22%),
-    linear-gradient(135deg, rgba(180, 190, 198, 0.7), rgba(255, 255, 255, 0.08));
+    radial-gradient(circle at 30% 26%, rgba(243, 234, 215, 0.84), transparent 22%),
+    linear-gradient(135deg, rgba(255, 181, 158, 0.7), rgba(243, 234, 215, 0.08));
 }
 
 .orb-delay {
@@ -167,7 +281,7 @@ textarea {
   min-height: 38px;
   border: 1px solid rgba(5, 5, 5, 0.08);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.48);
+  background: rgba(243, 234, 215, 0.48);
   color: rgba(5, 5, 5, 0.36);
   font-size: 12px;
   font-weight: 900;
@@ -256,22 +370,22 @@ textarea {
   width: 9px;
   height: 9px;
   background: var(--cyan);
-  box-shadow: 0 0 18px rgba(6, 182, 212, 0.92);
+  box-shadow: 0 0 18px rgba(217, 255, 63, 0.92);
 }
 
 .cursor-glow {
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(6, 182, 212, 0.6);
-  background: rgba(6, 182, 212, 0.13);
+  border: 1px solid rgba(217, 255, 63, 0.6);
+  background: rgba(217, 255, 63, 0.13);
   mix-blend-mode: multiply;
 }
 
 .cursor-hot .cursor-glow {
   width: 78px;
   height: 78px;
-  background: rgba(6, 182, 212, 0.19);
-  border-color: rgba(6, 182, 212, 0.86);
+  background: rgba(217, 255, 63, 0.19);
+  border-color: rgba(217, 255, 63, 0.86);
 }
 
 .cursor-hot .cursor-core {
@@ -281,7 +395,7 @@ textarea {
 
 .shimmer {
   background:
-    linear-gradient(90deg, #050505 0%, #06b6d4 28%, #050505 54%, #525252 76%, #050505 100%);
+    linear-gradient(90deg, #f3ead7 0%, #d9ff3f 22%, #ff5c35 46%, #ffb59e 68%, #f3ead7 100%);
   background-size: 240% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -359,7 +473,7 @@ textarea {
 .magnetic:hover {
   --ms: 1.035;
   border-radius: 22px;
-  box-shadow: 0 26px 80px rgba(6, 182, 212, 0.26);
+  box-shadow: 0 26px 80px rgba(217, 255, 63, 0.26);
 }
 
 .card-hover {
@@ -373,8 +487,8 @@ textarea {
 .card-hover:hover {
   transform: translateY(-8px) scale(1.018);
   border-radius: 26px;
-  border-color: rgba(6, 182, 212, 0.58);
-  box-shadow: 0 28px 85px rgba(6, 182, 212, 0.24);
+  border-color: rgba(217, 255, 63, 0.58);
+  box-shadow: 0 28px 85px rgba(217, 255, 63, 0.24);
 }
 
 .spotlight {
@@ -393,8 +507,8 @@ textarea {
   z-index: 0;
   opacity: 0;
   background:
-    radial-gradient(circle at var(--sx) var(--sy), rgba(6, 182, 212, 0.24), transparent 30%),
-    linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+    radial-gradient(circle at var(--sx) var(--sy), rgba(217, 255, 63, 0.24), transparent 30%),
+    linear-gradient(120deg, transparent, rgba(243, 234, 215, 0.32), transparent);
   transform: translateX(-22%);
   transition:
     opacity 240ms ease,
@@ -440,7 +554,7 @@ textarea {
   right: 24px;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+  background: linear-gradient(90deg, transparent, #d9ff3f, transparent);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 420ms cubic-bezier(0.2, 0.84, 0.24, 1);
@@ -477,8 +591,8 @@ textarea {
   bottom: 22px;
   width: 9px;
   height: 20px;
-  background: #06b6d4;
-  box-shadow: 0 0 18px rgba(6, 182, 212, 0.9);
+  background: #d9ff3f;
+  box-shadow: 0 0 18px rgba(217, 255, 63, 0.9);
   animation: blink 1s steps(2, end) infinite;
 }
 
@@ -545,7 +659,7 @@ textarea {
   overflow: hidden;
   border: 1px solid rgba(5, 5, 5, 0.1);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.52);
+  background: rgba(243, 234, 215, 0.52);
   box-shadow: 0 18px 55px rgba(5, 5, 5, 0.07);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -578,13 +692,13 @@ textarea {
   z-index: 1;
   width: 108%;
   transform: rotate(-1.2deg);
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(243, 234, 215, 0.1);
+  background: rgba(243, 234, 215, 0.06);
   opacity: 0.72;
 }
 
 .marquee-dark .marquee-track {
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(243, 234, 215, 0.62);
 }
 
 @keyframes marqueeLoop {
@@ -603,9 +717,9 @@ textarea {
   inset: 0;
   z-index: 0;
   background:
-    linear-gradient(115deg, rgba(6, 182, 212, 0.16), transparent 26%),
+    linear-gradient(115deg, rgba(217, 255, 63, 0.16), transparent 26%),
     radial-gradient(circle at 78% 18%, rgba(5, 5, 5, 0.08), transparent 28%),
-    radial-gradient(circle at 16% 84%, rgba(6, 182, 212, 0.12), transparent 30%);
+    radial-gradient(circle at 16% 84%, rgba(217, 255, 63, 0.12), transparent 30%);
   animation: sectionGlow 13s ease-in-out infinite alternate;
 }
 
@@ -625,7 +739,7 @@ textarea {
 .service-ring {
   position: absolute;
   z-index: 0;
-  border: 1px solid rgba(6, 182, 212, 0.28);
+  border: 1px solid rgba(217, 255, 63, 0.28);
   border-radius: 999px;
   pointer-events: none;
 }
@@ -636,8 +750,8 @@ textarea {
   width: 16px;
   height: 16px;
   border-radius: 999px;
-  background: #06b6d4;
-  box-shadow: 0 0 26px rgba(6, 182, 212, 0.88);
+  background: #d9ff3f;
+  box-shadow: 0 0 26px rgba(217, 255, 63, 0.88);
 }
 
 .service-ring-one {
@@ -685,7 +799,7 @@ textarea {
   top: 22%;
   bottom: 22%;
   width: 1px;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(243, 234, 215, 0.14);
 }
 
 .service-card-grid {
@@ -700,7 +814,7 @@ textarea {
   min-height: 280px;
   border: 1px solid rgba(5, 5, 5, 0.1);
   border-radius: 34px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(243, 234, 215, 0.72);
   padding: 26px;
   box-shadow: 0 24px 76px rgba(5, 5, 5, 0.08);
   backdrop-filter: blur(22px);
@@ -736,8 +850,8 @@ textarea {
   place-items: center;
   border: 1px solid rgba(5, 5, 5, 0.1);
   border-radius: 999px;
-  background: #050505;
-  color: #06b6d4;
+  background: #11140f;
+  color: #d9ff3f;
   overflow: hidden;
   transition:
     transform 320ms cubic-bezier(0.2, 0.84, 0.24, 1),
@@ -746,8 +860,8 @@ textarea {
 }
 
 .service-point:hover .service-arrow {
-  color: #050505;
-  background: #06b6d4;
+  color: #11140f;
+  background: #d9ff3f;
   transform: rotate(-35deg) scale(1.08);
 }
 
@@ -758,9 +872,9 @@ textarea {
   margin-top: 42px;
   place-items: center;
   border-radius: 24px;
-  background: #050505;
-  color: #06b6d4;
-  box-shadow: 0 22px 46px rgba(6, 182, 212, 0.18);
+  background: #11140f;
+  color: #d9ff3f;
+  box-shadow: 0 22px 46px rgba(217, 255, 63, 0.18);
   transition: transform 360ms cubic-bezier(0.2, 0.84, 0.24, 1);
 }
 
@@ -770,7 +884,7 @@ textarea {
 
 .service-point h3 {
   margin-top: 30px;
-  color: #050505;
+  color: #11140f;
   font-size: clamp(1.8rem, 3vw, 3.1rem);
   font-weight: 950;
   line-height: 0.95;
@@ -825,7 +939,7 @@ textarea {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(6, 182, 212, 0.1) 50%,
+    rgba(217, 255, 63, 0.1) 50%,
     transparent 100%
   );
   animation: scan 3.7s ease-in-out infinite;
@@ -858,7 +972,7 @@ textarea {
   position: absolute;
   inset: -8px;
   border-radius: 999px;
-  border: 1px solid rgba(6, 182, 212, 0.52);
+  border: 1px solid rgba(217, 255, 63, 0.52);
   animation: pulseRing 1.7s ease-out infinite;
 }
 
@@ -892,8 +1006,8 @@ textarea {
   opacity: 0.1;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px);
+    linear-gradient(rgba(243, 234, 215, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 234, 215, 0.32) 1px, transparent 1px);
   background-size: 13px 13px;
   mask-image: radial-gradient(circle at center, black, transparent 74%);
 }
